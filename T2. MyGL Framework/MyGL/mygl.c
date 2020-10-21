@@ -48,7 +48,7 @@ void DrawLine(Ponto inicio, Ponto fim, Cor RGBAi, Cor RGBAf){
 
 
     do{                                             //Loop para a formação da linha
-        inter = InterpolarCor(inter,RGBAf,dx);      //Faz a interpolação das cores RGBAi e RGBAf
+        inter = InterpolarCor(inter,RGBAf,pt0,pt1);      //Faz a interpolação das cores RGBAi e RGBAf
         if(inv == 1){
             PutPixel(reverte(pt0,rev),inter);       //Inverte o pixel e pinta ele
         } else {
@@ -106,25 +106,33 @@ Ponto reverte(Ponto pt, int r){
     }
     return rev;
 }
-Cor InterpolarCor(Cor RGBA1, Cor RGBA2, int dx) {
+Cor InterpolarCor(Cor RGBA1, Cor RGBA2, Ponto inicio, Ponto fim) {
     Cor inter = RGBA1;
+    float dx = fim.x - inicio.x;
+
     inter.red += (float)(RGBA2.red - RGBA1.red)/dx;
     inter.green += (float)(RGBA2.green - RGBA1.green)/dx;
     inter.blue += (float)(RGBA2.blue - RGBA1.blue)/dx;
-
+    inter.alpha = 255;
+    
     return inter;
 }
-
 
 // Definição da função que chamará as funções implementadas pelo aluno
 void MyGlDraw(void) {
     //
     // >>> Chame aqui as funções que você implementou <<<
-    Cor clr0 = {255,0,0,255};
-    Cor clr1 = {0,255,0,255};
-    Cor clr2 = {0,0,255,255};
-    Ponto pt0 = {128,128};
-    Ponto pt1 = {256,384};
-    Ponto pt2 = {384,128};
-    DrawTriangle(pt0,pt1,pt2,clr0,clr1,clr2);
+    Cor clr1 = {255,0,0,255};
+    Cor clr2 = {0,255,0,255};
+    Cor clr3 = {0,0,255,255};
+
+    Ponto pt1 = {128,128};
+    Ponto pt2 = {256,384};
+    Ponto pt3 = {384,128};
+
+    DrawTriangle(pt1,pt2,pt3,clr1,clr2,clr3);
+
+
+
+
 }
