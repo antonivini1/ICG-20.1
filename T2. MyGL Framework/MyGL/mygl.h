@@ -34,5 +34,7 @@ int modulo(int x);                                                              
 Ponto inverte(Ponto pt, int i);                                                 //Inverte x e y, podendo x = +-y
 Ponto reverte(Ponto pt,int r);                                                  //Reverte x e y
 Cor InterpolarCor(Cor RGBA1, Cor RGBA2, Ponto inicio, Ponto fim);               //Interpola as cores dos pontos
+//--------------------------------EXTRA-----------------------------------------
+void DrawFilledTriangle(Ponto v0, Ponto v1, Ponto v2, Cor RGBA0,Cor RGBA1,Cor RGBA2);
 
 #endif  // MYGL_H
