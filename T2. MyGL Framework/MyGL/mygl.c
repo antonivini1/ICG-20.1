@@ -75,7 +75,7 @@ void DrawTriangle(Ponto v0, Ponto v1, Ponto v2, Cor RGBA0,Cor RGBA1,Cor RGBA2){
     DrawLine(v1,v2,RGBA1,RGBA2);
     DrawLine(v2,v0,RGBA2,RGBA0);
 }
-//-----------------------------------------------------------------------------------
+//--------------------------------AUXILIARES-----------------------------------------
 int modulo(int x){
     if(x >= 0)
         return x;
@@ -109,6 +109,7 @@ Ponto reverte(Ponto pt, int r){
 Cor InterpolarCor(Cor RGBA1, Cor RGBA2, Ponto inicio, Ponto fim) {
     Cor inter = RGBA1;
     float dx = fim.x - inicio.x;
+    dx = modulo(dx);
 
     inter.red += (float)(RGBA2.red - RGBA1.red)/dx;
     inter.green += (float)(RGBA2.green - RGBA1.green)/dx;
@@ -117,22 +118,229 @@ Cor InterpolarCor(Cor RGBA1, Cor RGBA2, Ponto inicio, Ponto fim) {
     
     return inter;
 }
+//---------------------------------EXTRA---------------------------------------------
+void DrawFilledTriangle(Ponto v0, Ponto v1, Ponto v2, Cor RGBA0,Cor RGBA1,Cor RGBA2){
+    Ponto menor, maior, mid;
+    Cor interm, interM, intermd;
+    int maiorX, menorX, midX;
+    int baseY1, baseY2, baseY3;
+    int i;
 
+    if(v0.x != v1.x && v0.x != v2.x && v1.x != v2.x){
+        if(v0.x < v1.x && v0.x < v2.x){
+        menorX = v0.x;
+        baseY1 = v0.y;
+        interm = RGBA0;
+        } else if(v1.x < v0.x && v1.x < v2.x){
+            menorX = v1.x;
+            baseY1 = v1.y;
+            interm = RGBA1;
+        } else if(v2.x < v1.x && v2.x < v0.x){
+            menorX = v2.x;
+            baseY1 = v2.y;
+            interm = RGBA2;
+        }
+        if(v0.x > v1.x && v0.x > v2.x){
+            maiorX = v0.x;
+            baseY2 = v0.y;
+            interM = RGBA0;
+        } else if(v1.x > v0.x && v1.x > v2.x){
+            maiorX = v1.x;
+            baseY2 = v1.y;
+            interM = RGBA1;
+        } else if(v2.x > v1.x && v2.x > v0.x){
+            maiorX = v2.x;
+            baseY2 = v2.y;
+            interM = RGBA2;
+        }
+        if(v0.x != menorX && v0.x != maiorX){
+        midX = v0.x;
+        baseY3 = v0.y;
+        intermd = RGBA0;
+    } else if(v1.x != menorX && v1.x != maiorX){
+        midX = v1.x;
+        baseY3 = v1.y;
+        intermd = RGBA1;
+    } else if(v2.x != menorX && v2.x != maiorX){
+        midX = v2.x;
+        baseY3 = v2.y;
+        intermd = RGBA2;
+    }
+    } 
+    else {
+        if(v0.x == v1.x){
+            if(v0.x > v2.x){
+                menorX = v2.x;
+                baseY1 = v2.y;
+                interm = RGBA2;
+                if(v0.y < v1.y){
+                    midX = v0.x;
+                    baseY3 = v0.y;
+                    intermd = RGBA0;
+                    maiorX = v1.x;
+                    baseY2 = v1.y;
+                    interM = RGBA1;
+                } 
+                else {
+                    midX = v1.x;
+                    baseY3 = v1.y;
+                    intermd = RGBA1;
+                    maiorX = v0.x;
+                    baseY2 = v0.y;
+                    interM = RGBA0;
+                }
+            } else {
+                maiorX = v2.x;
+                baseY2 = v2.y;
+                interM = RGBA2;
+                if(v0.y < v1.y){
+                    menorX = v0.x;
+                    baseY1 = v0.y;
+                    interm = RGBA0;
+                    midX = v1.x;
+                    baseY3 = v1.y;
+                    intermd = RGBA1;
+                } 
+                else {
+                    menorX = v1.x;
+                    baseY1 = v1.y;
+                    interm = RGBA1;
+                    midX = v0.x;
+                    baseY3 = v0.y;
+                    intermd = RGBA0;
+                }
+            }
+        }
+        else if(v0.x == v2.x){
+            if(v0.x > v1.x){
+                menorX = v1.x;
+                baseY1 = v1.y;
+                interm = RGBA1;
+                if(v0.y < v2.y){
+                    midX = v0.x;
+                    baseY3 = v0.y;
+                    intermd = RGBA0;
+                    maiorX = v2.x;
+                    baseY2 = v2.y;
+                    interM = RGBA2;
+                } 
+                else {
+                    midX = v2.x;
+                    baseY3 = v2.y;
+                    intermd = RGBA2;
+                    maiorX = v0.x;
+                    baseY2 = v0.y;
+                    interM = RGBA0;
+                }
+            } else {
+                maiorX = v1.x;
+                baseY2 = v1.y;
+                interM = RGBA1;
+                if(v0.y < v2.y){
+                    menorX = v0.x;
+                    baseY1 = v0.y;
+                    interm = RGBA0;
+                    midX = v2.x;
+                    baseY3 = v2.y;
+                    intermd = RGBA2;
+                } 
+                else {
+                    menorX = v2.x;
+                    baseY1 = v2.y;
+                    interm = RGBA2;
+                    midX = v0.x;
+                    baseY3 = v0.y;
+                    intermd = RGBA0;
+                }
+            }
+        }
+        else if(v1.x == v2.x){
+            if(v1.x > v0.x){
+                menorX = v0.x;
+                baseY1 = v0.y;
+                interm = RGBA0;
+                if(v1.y < v2.y){
+                    midX = v1.x;
+                    baseY3 = v1.y;
+                    intermd = RGBA1;
+                    maiorX = v2.x;
+                    baseY2 = v2.y;
+                    interM = RGBA2;
+                } 
+                else {
+                    midX = v2.x;
+                    baseY3 = v2.y;
+                    intermd = RGBA2;
+                    maiorX = v1.x;
+                    baseY2 = v1.y;
+                    interM = RGBA1;
+                }
+            } else {
+                maiorX = v0.x;
+                baseY2 = v0.y;
+                interM = RGBA0;
+                if(v1.y < v2.y){
+                    menorX = v1.x;
+                    baseY1 = v1.y;
+                    interm = RGBA1;
+                    midX = v2.x;
+                    baseY3 = v2.y;
+                    intermd = RGBA2;
+                } 
+                else {
+                    menorX = v2.x;
+                    baseY1 = v2.y;
+                    interm = RGBA2;
+                    midX = v1.x;
+                    baseY3 = v1.y;
+                    intermd = RGBA1;
+                }
+            }
+        }
+    }
+    
+    
+    menor.x = menorX; menor.y = baseY1;
+    maior.x = maiorX; maior.y = baseY2;
+    mid.x = midX; mid.y = baseY3;
+    
+    if(baseY3 < baseY2){
+        for(i = menorX;i < midX;i++){
+            DrawTriangle(menor,mid,maior,interm,intermd,interM);
+            menor.x++;
+            interm = InterpolarCor(interm,intermd,menor,mid);
+        }
+    }
+    else if(baseY3 < baseY1){
+        for(i = midX;i < maiorX;i++){
+            DrawTriangle(menor,mid,maior,interm,intermd,interM);
+            mid.x++;
+            intermd = InterpolarCor(intermd,interM,mid,maior);
+        }
+    } 
+    else {
+        for(i = menorX;i < maiorX;i++){
+            DrawTriangle(menor,mid,maior,interm,intermd,interM);
+            menor.x++;
+            interm = InterpolarCor(interm,interM,menor,maior);
+        }
+    }
+
+}
 // Definição da função que chamará as funções implementadas pelo aluno
 void MyGlDraw(void) {
     //
     // >>> Chame aqui as funções que você implementou <<<
-    Cor clr1 = {255,0,0,255};
-    Cor clr2 = {0,255,0,255};
-    Cor clr3 = {0,0,255,255};
-
+    //
+    
+    Cor clr = {222,186,64,255};
     Ponto pt1 = {128,128};
-    Ponto pt2 = {256,384};
-    Ponto pt3 = {384,128};
-
-    DrawTriangle(pt1,pt2,pt3,clr1,clr2,clr3);
-
-
-
-
+    Ponto pt2 = {256,128};
+    Ponto pt3 = {192,256};
+    DrawFilledTriangle(pt1,pt2,pt3,clr,clr,clr);
+    Ponto pt4 = {384,128};
+    Ponto pt5 = {320,256};
+    DrawFilledTriangle(pt2,pt4,pt5,clr,clr,clr);
+    Ponto pt6 = {256,384};
+    DrawFilledTriangle(pt3,pt5,pt6,clr,clr,clr);
 }
